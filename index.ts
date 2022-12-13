@@ -29,48 +29,61 @@ class Inimigo{
 }
 
 let arrayTorres : Torre[] = []
-let arrayInimigos : Inimigo[] = []
 
 function AdicionarTorre(torre1 : Torre, posicaoTorre: number): void{
     arrayTorres[posicaoTorre] = torre1
 }
 
 function ComecarPartida(): void{
-    let vidaJogador: number = 10
+    let vidaJogador: number = 2
     let rodada = 0
-    let inimigo : Inimigo 
-    let posicaoInimigo: number = 9
+    let indexInimigo = 0
+    let inimigo : Inimigo[] = [] 
+    let posicaoInimigo: number[] = []
     let torre1 = new Torre("Digas" , 20, 2, 7, 5)
     let posicaoTorre =  4
+    let posicaoAtaque = 0
+    let cont = 0
     AdicionarTorre(torre1, posicaoTorre)
 
     while(vidaJogador>0){
 
-        if(rodada == 0 || rodada % 9 == 0){
-            inimigo = new Inimigo("Diego Osvaldo Cruz", 150)
-            arrayInimigos[9] = inimigo
-            posicaoInimigo = 9
+        if(indexInimigo<5){
+            inimigo[indexInimigo] = new Inimigo("Diego Osvaldo Cruz", 20)
+            posicaoInimigo[indexInimigo] = 9
         }
 
-        if(posicaoTorre + torre1.Alcance >= posicaoInimigo && posicaoTorre - torre1.Alcance <= posicaoInimigo){
-            if(inimigo.Vida <= 0){
-                alert("Inimigo destruido, você foi o ganhador!")
-                vidaJogador = 0
-            }else{
-                inimigo.Vida = inimigo.Vida - torre1.Ataque
+        if(posicaoTorre + torre1.Alcance >= posicaoInimigo[posicaoAtaque] && posicaoTorre - torre1.Alcance <= posicaoInimigo[posicaoAtaque]){
+           
+            inimigo[posicaoAtaque].Vida = inimigo[posicaoAtaque].Vida - torre1.Ataque
 
+            if(inimigo[posicaoAtaque].Vida <= 0){
+                    alert("Inimigo destruido!")
+                    posicaoAtaque++
+                    cont++
             }
         }
 
-        if(posicaoInimigo == 0){
-            vidaJogador--
+        for (let index = 0; index < posicaoInimigo.length; index++) {
+            posicaoInimigo[index] =  posicaoInimigo[index] - 1
+        }
+
+        if(posicaoInimigo[posicaoAtaque] == 0){
+            posicaoAtaque++
+            vidaJogador = vidaJogador - 1
         }
 
         if(vidaJogador == 0){
             alert("Lose!")
         }
 
-        posicaoInimigo++
+        indexInimigo++
+        console.log(vidaJogador)
+        
+        if(cont>4){
+            alert("Ganhou o game!")
+            vidaJogador = 0
+        }
     }
 
 

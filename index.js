@@ -19,39 +19,48 @@ var Inimigo = /** @class */ (function () {
     return Inimigo;
 }());
 var arrayTorres = [];
-var arrayInimigos = [];
 function AdicionarTorre(torre1, posicaoTorre) {
     arrayTorres[posicaoTorre] = torre1;
 }
 function ComecarPartida() {
-    var vidaJogador = 10;
+    var vidaJogador = 2;
     var rodada = 0;
-    var inimigo;
-    var posicaoInimigo = 9;
+    var indexInimigo = 0;
+    var inimigo = [];
+    var posicaoInimigo = [];
     var torre1 = new Torre("Digas", 20, 2, 7, 5);
     var posicaoTorre = 4;
+    var posicaoAtaque = 0;
+    var cont = 0;
     AdicionarTorre(torre1, posicaoTorre);
     while (vidaJogador > 0) {
-        if (rodada == 0 || rodada % 9 == 0) {
-            inimigo = new Inimigo("Diego Osvaldo Cruz", 150);
-            arrayInimigos[9] = inimigo;
-            posicaoInimigo = 9;
+        if (indexInimigo < 5) {
+            inimigo[indexInimigo] = new Inimigo("Diego Osvaldo Cruz", 20);
+            posicaoInimigo[indexInimigo] = 9;
         }
-        if (posicaoTorre + torre1.Alcance >= posicaoInimigo && posicaoTorre - torre1.Alcance <= posicaoInimigo) {
-            if (inimigo.Vida <= 0) {
-                alert("Inimigo destruido, você foi o ganhador!");
-                vidaJogador = 0;
-            }
-            else {
-                inimigo.Vida = inimigo.Vida - torre1.Ataque;
+        if (posicaoTorre + torre1.Alcance >= posicaoInimigo[posicaoAtaque] && posicaoTorre - torre1.Alcance <= posicaoInimigo[posicaoAtaque]) {
+            inimigo[posicaoAtaque].Vida = inimigo[posicaoAtaque].Vida - torre1.Ataque;
+            if (inimigo[posicaoAtaque].Vida <= 0) {
+                alert("Inimigo destruido!");
+                posicaoAtaque++;
+                cont++;
             }
         }
-        if (posicaoInimigo == 0) {
-            vidaJogador--;
+        for (var index = 0; index < posicaoInimigo.length; index++) {
+            posicaoInimigo[index] = posicaoInimigo[index] - 1;
+        }
+        if (posicaoInimigo[posicaoAtaque] == 0) {
+            posicaoAtaque++;
+            vidaJogador = vidaJogador - 1;
         }
         if (vidaJogador == 0) {
             alert("Lose!");
         }
-        posicaoInimigo++;
+        indexInimigo++;
+        console.log(vidaJogador);
+        if (cont > 4) {
+            alert("Ganhou o game!");
+            vidaJogador = 0;
+        }
     }
 }
